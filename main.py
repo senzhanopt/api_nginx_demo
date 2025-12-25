@@ -1,7 +1,7 @@
-from fastapi import Fastapi
+from fastapi import FastAPI
 
-app = Fastapi()
+app = FastAPI()
 
 @app.get("/")
 def root() -> str:
-    return "Merry Xmas, Di Gua Da Wang!"
+    return "Hello, World!"
