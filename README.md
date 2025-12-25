@@ -36,6 +36,12 @@ server {
 }
 ```
 
+If limiting access, add above `proxy_pass`:
+```bash
+allow <YOUR_PUBLIC_IP>;
+deny all;
+```
+
 Test and run NGINX:
 ```bash
 sudo ln -s /etc/nginx/sites-available/fastapi_nginx /etc/nginx/sites-enabled/
