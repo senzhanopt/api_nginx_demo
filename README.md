@@ -95,3 +95,14 @@ sudo systemctl enable fastapi
 sudo systemctl start fastapi
 sudo systemctl status fastapi
 ```
+
+## MLflow
+
+Follow the same procedure, and use port 5000 for MLflow by default. Run MLflow server by:
+```bash
+uv run mlflow server
+```
+
+Note: avoid use MLflow version 3.8.0, which gives an empty UI. See discussion https://github.com/mlflow/mlflow/issues/19592
+
+This stores metadata and artifacts locally.
