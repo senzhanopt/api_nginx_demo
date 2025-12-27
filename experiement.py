@@ -21,6 +21,8 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_
 
 mlflow.set_tracking_uri(os.getenv("MLFLOW_TRACKING_URI"))  # Replace with your MLflow server URI
 
+mlflow.set_experiment("demo_experiment")
+
 # Start MLflow run
 with mlflow.start_run():
     # Train model
@@ -34,7 +36,7 @@ with mlflow.start_run():
     # Log parameters, metrics, and model
     mlflow.log_param("model_type", "LinearRegression")
     mlflow.log_metric("mse", mse)
-    mlflow.sklearn.log_model(model, "linear_model")
+    mlflow.sklearn.log_model(model, name="linear_model")
 
     print(f"Logged MSE: {mse}")
 
