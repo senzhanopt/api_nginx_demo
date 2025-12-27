@@ -103,6 +103,20 @@ Follow the same procedure, and use port 5000 for MLflow by default. Run MLflow s
 uv run mlflow server
 ```
 
+SSH tunnel to view MLflow server locally at http://localhost:8080:
+```bash
+ssh -L 8080:localhost:5000 -i your-key.pem ubuntu@your-ec2-ip
+```
+
 Note: avoid use MLflow version 3.8.0, which gives an empty UI. See discussion https://github.com/mlflow/mlflow/issues/19592
 
 This stores metadata and artifacts locally.
+
+## HTTPS
+
+```bash
+sudo apt install -y certbot python3-certbot-nginx
+sudo certbot --nginx -d mlflow.example.com
+```
+
+Note: AWS EC2 public DNS (e.g., ec2-13-53-138-24.eu-north-1.compute.amazonaws.com) **cannot be used with Let’s Encrypt**. Use a domain you control.
