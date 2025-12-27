@@ -100,7 +100,7 @@ sudo systemctl status fastapi
 
 Follow the same procedure, and use port 5000 for MLflow by default. Run MLflow server by:
 ```bash
-uv run mlflow server
+uv run mlflow server --host 127.0.0.1 --port 5000
 ```
 
 SSH tunnel to view MLflow server locally at http://localhost:8080:
@@ -120,3 +120,39 @@ sudo certbot --nginx -d mlflow.example.com
 ```
 
 Note: AWS EC2 public DNS (e.g., ec2-13-53-138-24.eu-north-1.compute.amazonaws.com) **cannot be used with Let’s Encrypt**. Use a domain you control.
+
+## MLflow with PostgreSQL and S3
+
+Follow steps in AWS Console to create a S3 bucket. Use a unique bucket name. Block all public access and use default settings.
+
+Creat an IAM role for EC2 with AmazonS3FullAccess policy. Attach the role to the EC2 instance under EC2 instance Actions -> Security -> Modify IAM role.
+
+Test S3 bucket access by:
+```bash
+sudo apt install awscli -y
+aws --version
+aws s3 ls
+```
+
+Create a PostgreSQL database with Easy create. Give it a DB instance identifier (which is not the database name), master username and self managed password. Set up EC2 connection to the created EC2 instance.
+
+Test access. Use postgres as the default DB_NAME. Give your passward.
+```bash
+sudo apt install postgresql-client -y
+psql -h RDS_ENDPOINT -U USERNAME -d DB_NAME
+```
+
+Create a new database for MLflow by:
+```bash
+CREATE DATABASE mlflow_db;
+\q # leave
+```
+
+Run MLflow server by:
+```bash
+uv run mlflow server --backend-store-uri postgresql://<username>:<password>@<rds-endpoint>:5432/<database> --artifacts-destination s3://<s3-bucket> --host 127.0.0.1 --port 5000
+```
+
+Check https://mlflow.org/docs/latest/self-hosting/architecture/tracking-server/.
+
+Now you are running to run your experiments with MLflow locally by setting the `tracking_uri` as the public DNS or IPv4 address of your EC2 instance.
