@@ -60,7 +60,7 @@ uv sync
 
 Run FastAPI with Uvicorn:
 ```bash
-uv run uvicorn main:app
+uv run uvicorn app.main:app
 ```
 
 Visit http://<YOUR_EC2_PUBLIC_IP>/ for response.
