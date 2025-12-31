@@ -242,3 +242,26 @@ docker run -d -p 8000:8000 --name fastapi-apptest <registryID>.dkr.ecr.eu-north-
 ```
 
 Under EC2 Security, select Security Group, edit Inbound Rules: Add a rule with Type: Custom TCP, Port range: 8000, Source: 0.0.0.0/0. Now the FastAPI app will be reachable via the EC2 public IP.
+
+## Docker Compose
+
+Install:
+```bash
+DOCKER_COMPOSE_VERSION=$(curl -s https://api.github.com/repos/docker/compose/releases/latest | jq -r .tag_name)
+sudo curl -L "https://github.com/docker/compose/releases/download/$DOCKER_COMPOSE_VERSION/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+sudo chmod +x /usr/local/bin/docker-compose
+```
+
+Verify:
+```bash
+docker-compose --version
+```
+
+Export environment variable:
+```bash
+export <registryID>.dkr.ecr.eu-north-1.amazonaws.com/fastapi-app:latest
+docker-compose pull
+docker-compose up
+```
+
+Now the FastAPI app will be reachable via the EC2 public IP, through Nginx reverse proxy.
