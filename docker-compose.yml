@@ -2,7 +2,7 @@ version: '3.9'
 
 services:
   app:
-    build: .
+    image: "${FASTAPI_IMAGE}"
     container_name: fastapi_app
 
   nginx:
