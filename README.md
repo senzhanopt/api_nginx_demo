@@ -268,4 +268,4 @@ Now the FastAPI app will be reachable via the EC2 public IP, through Nginx rever
 
 ## CI/CD
 
-Follow `.github/workflows` to automatically deploy to EC2.
+Add Github Secrets: `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `AWS_REGION`, `AWS_ACCOUNT_ID`, `EC2_HOST`, `EC2_USER`, `EC2_SSH_KEY`. Follow `.github/workflows` to automatically deploy to EC2.
