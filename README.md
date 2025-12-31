@@ -156,3 +156,89 @@ uv run mlflow server --backend-store-uri postgresql://<username>:<password>@<rds
 Check https://mlflow.org/docs/latest/self-hosting/architecture/tracking-server/.
 
 Now you are running to run your experiments with MLflow locally by setting the `tracking_uri` as the public DNS or IPv4 address of your EC2 instance.
+
+## Docker
+
+Create an IAM Role with `AmazonEC2ContainerRegistryFullAccess`; attach it to an EC2 instance.
+
+Create an IAM User; attach an AdministratorAccess policy; generate access key for CLI. 
+
+Install AWS CLI v2:
+
+```bash
+curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+unzip awscliv2.zip
+sudo ./aws/install
+```
+
+Then:
+
+```bash
+aws configure
+```
+
+Create an ECR repo:
+```bash
+aws ecr create-repository --repository-name fastapi-app --region eu-north-1
+```
+
+Authenticate:
+```bash
+aws ecr get-login-password --region eu-north-1 \
+| docker login --username AWS --password-stdin <registryID>.dkr.ecr.eu-north-1.amazonaws.com
+```
+
+Docker build, tag, and push:
+```bash
+docker build -t fastapi-app .
+docker tag fastapi-app:latest <registryID>.dkr.ecr.eu-north-1.amazonaws.com/fastapi-app:latest
+docker push <registryID>.dkr.ecr.eu-north-1.amazonaws.com/fastapi-app:latest
+```
+
+Verify:
+```bash
+aws ecr list-images --repository-name fastapi-app --region eu-north-1
+```
+
+On EC2, install docker:
+```bash
+sudo apt update
+sudo apt install -y docker.io
+sudo systemctl start docker
+sudo systemctl enable docker
+sudo usermod -aG docker $USER
+newgrp docker
+```
+
+Verify:
+```bash
+docker --version
+```
+
+Install AWS CLI v2:
+
+```bash
+sudo apt update
+sudo apt install unzip
+curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+unzip awscliv2.zip
+sudo ./aws/install
+```
+
+Authenticate:
+```bash
+aws ecr get-login-password --region eu-north-1 \
+| docker login --username AWS --password-stdin <registryID>.dkr.ecr.eu-north-1.amazonaws.com
+```
+
+Pull:
+```bash
+docker pull <registryID>.dkr.ecr.eu-north-1.amazonaws.com/fastapi-app:latest
+```
+
+Run:
+```bash
+docker run -d -p 8000:8000 --name fastapi-apptest <registryID>.dkr.ecr.eu-north-1.amazonaws.com/fastapi-app:latest
+```
+
+Under EC2 Security, select Security Group, edit Inbound Rules: Add a rule with Type: Custom TCP, Port range: 8000, Source: 0.0.0.0/0. Now the FastAPI app will be reachable via the EC2 public IP.
