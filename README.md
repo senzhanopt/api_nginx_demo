@@ -257,7 +257,7 @@ Verify:
 docker-compose --version
 ```
 
-Export environment variable:
+Export environment variable or create a `.env` file and run docker-compose:
 ```bash
 export <registryID>.dkr.ecr.eu-north-1.amazonaws.com/fastapi-app:latest
 docker-compose pull
@@ -265,3 +265,7 @@ docker-compose up
 ```
 
 Now the FastAPI app will be reachable via the EC2 public IP, through Nginx reverse proxy.
+
+## CI/CD
+
+Follow `.github/workflows` to automatically deploy to EC2.
