@@ -269,3 +269,33 @@ Now the FastAPI app will be reachable via the EC2 public IP, through Nginx rever
 ## CI/CD
 
 Add Github Secrets: `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `AWS_REGION`, `AWS_ACCOUNT_ID`, `EC2_HOST`, `EC2_USER`, `EC2_SSH_KEY`. Follow `.github/workflows` to automatically deploy to EC2.
+
+## Load Balancing
+```arduino
+Client
+  ↓
+Nginx (load balancer)
+  ↓     ↓     ↓
+FastAPI-1  FastAPI-2  FastAPI-3
+```
+
+Mount `nginx.conf` instead of `default.conf` in docker-compose.
+
+Scaling up/down:
+```bash
+docker-compose up --scale app=6
+docker-compose up --scale app=2
+```
+
+Use `gunicorn`:
+```bash
+gunicorn main:app \
+  -k uvicorn.workers.UvicornWorker \
+  -w 4 \
+  -b 0.0.0.0:8000
+```
+
+Rule of thumb:
+```uni
+workers = (CPU cores × 2) + 1
+```
