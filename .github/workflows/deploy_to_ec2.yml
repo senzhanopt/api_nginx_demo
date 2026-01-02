@@ -1,6 +1,7 @@
 name: Deploy FastAPI to EC2
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - main
