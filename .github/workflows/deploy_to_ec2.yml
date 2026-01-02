@@ -43,4 +43,4 @@ jobs:
             cd /home/ubuntu/api_nginx_demo
             git pull origin main
             docker-compose pull
-            docker-compose up -d
+            docker-compose up -d --scale app=4
