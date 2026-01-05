@@ -259,7 +259,7 @@ docker-compose --version
 
 Export environment variable or create a `.env` file and run docker-compose:
 ```bash
-export <registryID>.dkr.ecr.eu-north-1.amazonaws.com/fastapi-app:latest
+export FASTAPI_IMAGE=<registryID>.dkr.ecr.eu-north-1.amazonaws.com/fastapi-app:latest
 docker-compose pull
 docker-compose up
 ```
