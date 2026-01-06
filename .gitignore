@@ -12,3 +12,6 @@ wheels/
 *.pem
 
 .env
+
+cdk.context.json
+cdk.out/
