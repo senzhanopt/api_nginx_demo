@@ -23,20 +23,3 @@ rm -rf awscliv2.zip aws
 DOCKER_COMPOSE_VERSION=$(curl -s https://api.github.com/repos/docker/compose/releases/latest | jq -r .tag_name)
 curl -L "https://github.com/docker/compose/releases/download/$DOCKER_COMPOSE_VERSION/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
 chmod +x /usr/local/bin/docker-compose
-
-# Clone Github repository into /home/ubuntu
-git clone https://github.com/senzhanopt/api_nginx_demo.git /home/ubuntu/api_nginx_demo
-cd /home/ubuntu/api_nginx_demo
-
-# Create .env file
-cat > .env <<EOF
-AWS_ACCOUNT_ID=513689973492
-AWS_REGION=eu-north-1
-FASTAPI_IMAGE=513689973492.dkr.ecr.eu-north-1.amazonaws.com/fastapi-app:latest
-EOF
-
-# Load environment variables from .env
-export $(grep -v '^#' .env | xargs)
-
-# Authenticate Docker to AWS ECR using variables from .env
-aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com
