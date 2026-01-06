@@ -55,9 +55,9 @@ jobs:
             FASTAPI_IMAGE=${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/fastapi-app:latest
             EOF
 
-            aws ecr get-login-password --region $AWS_REGION | \
+            aws ecr get-login-password --region ${{ secrets.AWS_REGION }} | \
             sudo docker login --username AWS --password-stdin \
-            $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com
+            ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com
 
             sudo docker-compose pull
             sudo docker-compose up -d --scale app=4
