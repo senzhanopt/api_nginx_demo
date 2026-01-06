@@ -4,7 +4,7 @@ app = FastAPI()
 
 @app.get("/")
 def index() -> str:
-    return "Hello, Welcome to my FastAPI!"
+    return "Hello, Welcome to my store!"
 
 @app.get("/health")
 def health_check() -> dict:
