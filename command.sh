@@ -1,4 +1,5 @@
 #!/bin/bash
+# Run during SSH session to set up environment
 set -e
 
 # Update package lists and install dependencies
@@ -27,10 +28,11 @@ git clone https://github.com/senzhanopt/api_nginx_demo.git
 cd api_nginx_demo
 
 # Create .env file with environment variables
+# Replace the placeholder values with your actual AWS account ID and region
 cat > .env <<EOF
-AWS_ACCOUNT_ID=513689973492
-AWS_REGION=eu-north-1
-FASTAPI_IMAGE=513689973492.dkr.ecr.eu-north-1.amazonaws.com/fastapi-app:latest
+AWS_ACCOUNT_ID=${AWS_ACCOUNT_ID}
+AWS_REGION=${AWS_REGION}
+FASTAPI_IMAGE=${FASTAPI_IMAGE}
 EOF
 
 # Load environment variables
