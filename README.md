@@ -299,3 +299,27 @@ Rule of thumb:
 ```uni
 workers = (CPU cores × 2) + 1
 ```
+
+## CDK
+
+Install:
+```bash
+npm install -g aws-cdk
+cdk --version
+```
+
+Bootstrap:
+```bash
+cdk bootstrap aws://<ACCOUNT_ID>/<REGION>
+```
+
+Deploy by:
+```bash
+cd cdk
+cdk deploy --app "uv run app.py"
+```
+
+Destroy by:
+```bash
+cdk destroy --app "uv run app.py"
+```
